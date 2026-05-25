@@ -359,3 +359,13 @@ a.add-btn { color: white !important; text-decoration: none; }
   .main > .flex.between.center .btn { width: 100%; }
   .filter-bar > * { width: 100%; }
 }
+
+/* Fix overflow login en mobile */
+@media (max-width: 768px) {
+  .login-wrap { overflow-x: hidden; }
+  .login-left { width: 100%; box-sizing: border-box; overflow: hidden; }
+  .login-left .lead, .login-left .tagline, .login-left .features { max-width: 100%; }
+  .login-right { width: 100%; box-sizing: border-box; }
+  .topbar { overflow: hidden; }
+  body { overflow-x: hidden; }
+}
