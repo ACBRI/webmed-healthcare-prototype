@@ -352,3 +352,10 @@ a.add-btn { color: white !important; text-decoration: none; }
 }
 .hamburger span::before { top: -6px; }
 .hamburger span::after { top: 6px; }
+
+/* Fix mobile: encabezado de página debe envolver */
+@media (max-width: 768px) {
+  .main > .flex.between.center { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .main > .flex.between.center .btn { width: 100%; }
+  .filter-bar > * { width: 100%; }
+}
