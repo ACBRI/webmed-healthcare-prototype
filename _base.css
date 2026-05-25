@@ -369,3 +369,17 @@ a.add-btn { color: white !important; text-decoration: none; }
   .topbar { overflow: hidden; }
   body { overflow-x: hidden; }
 }
+
+/* Fix DEFINITIVO: login-wrap fluido */
+.login-wrap { width: 100% !important; max-width: 1440px; }
+@media (max-width: 1440px) {
+  .login-wrap { height: auto !important; }
+}
+@media (max-width: 768px) {
+  .login-left { padding: 30px 20px !important; min-height: auto; }
+  .login-right { padding: 30px 20px !important; }
+  .tagline { font-size: 26px !important; line-height: 1.15 !important; word-wrap: break-word; }
+  .lead { font-size: 14px !important; line-height: 1.5 !important; word-wrap: break-word; }
+  .feature-txt { font-size: 13px !important; }
+  .login-card { max-width: 100% !important; }
+}
