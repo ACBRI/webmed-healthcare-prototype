@@ -203,3 +203,152 @@ a.sidebar-item:hover { background: var(--bg); }
 a.sidebar-item.active { background: var(--primary-50); color: var(--primary-700) !important; font-weight: 600; }
 a.cart-btn { color: var(--primary-700) !important; text-decoration: none; }
 a.add-btn { color: white !important; text-decoration: none; }
+
+/* ============================================================ */
+/* RESPONSIVE — Tablet y Mobile                                  */
+/* ============================================================ */
+
+/* App container: en lugar de ancho fijo 1440px, hacer fluido */
+@media (max-width: 1440px) {
+  .app { width: 100%; }
+}
+
+/* ============== TABLET ≤ 1024px ============== */
+@media (max-width: 1024px) {
+  .sidebar { width: 80px; padding: 16px 8px; }
+  .sidebar-section { display: none; }
+  .sidebar-item, a.sidebar-item { justify-content: center; padding: 12px 6px; font-size: 0; }
+  .sidebar-item .icon { font-size: 22px; }
+  .topnav { display: none; }
+  .search { min-width: 200px; }
+  .main { padding: 24px 24px; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+  .grid-3, .quick-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .product-grid { grid-template-columns: repeat(3, 1fr) !important; }
+  .sym-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* ============== MOBILE ≤ 768px ============== */
+@media (max-width: 768px) {
+  /* Topbar más compacta */
+  .topbar { height: 56px; padding: 0 14px; }
+  .brand, a.brand { font-size: 16px; }
+  .brand-logo { width: 32px; height: 32px; font-size: 16px; }
+  .search { display: none; }
+  .topnav-right { gap: 10px; }
+  .topnav-right > a:not(.brand) { display: none; }
+
+  /* Botón hamburguesa */
+  .hamburger { display: flex !important; }
+
+  /* Sidebar: oculta por defecto, slide-in cuando .open */
+  .sidebar {
+    position: fixed; left: -260px; top: 56px; z-index: 100;
+    width: 240px; min-height: calc(100vh - 56px);
+    transition: left 0.25s ease; padding: 20px 14px;
+    box-shadow: 4px 0 16px rgba(0,0,0,0.08);
+  }
+  .sidebar.open { left: 0; }
+  .sidebar-section { display: block; }
+  .sidebar-item, a.sidebar-item { justify-content: flex-start; padding: 12px; font-size: 14px; }
+  .sidebar-item .icon { font-size: 18px; }
+
+  /* Backdrop cuando sidebar abierta */
+  body.sidebar-open::before {
+    content: ''; position: fixed; inset: 0; top: 56px;
+    background: rgba(15, 23, 42, 0.4); z-index: 90;
+  }
+
+  /* Main fluído */
+  .main { padding: 18px 16px; }
+  .page-title { font-size: 22px; }
+
+  /* Grids colapsan a 1-2 columnas */
+  .grid-4, .grid-3, .grid-2, .quick-grid { grid-template-columns: 1fr !important; gap: 12px; }
+  .product-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px; }
+  .sym-grid { grid-template-columns: 1fr !important; }
+
+  /* Carrito: layout en columna */
+  main.main > div[style*="grid-template-columns: 1.4fr 1fr"],
+  main.main > div[style*="grid-template-columns: 1fr 1fr"],
+  main.main > div[style*="grid-template-columns: 2fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* Catálogo: filtros van arriba en lugar de izquierda */
+  div[style*="grid-template-columns: 260px 1fr"] { grid-template-columns: 1fr !important; }
+  .filter-card { position: static !important; }
+
+  /* Comparador seguros: scroll horizontal */
+  .compare-grid {
+    grid-template-columns: 140px repeat(4, minmax(160px, 1fr)) !important;
+    overflow-x: auto; display: grid;
+  }
+
+  /* Filtros seguros: apilados */
+  .filter-bar { grid-template-columns: 1fr !important; gap: 10px; padding: 14px; }
+
+  /* Cart items: re-organizar */
+  .cart-item { grid-template-columns: 56px 1fr; row-gap: 8px; }
+  .cart-item .qty-ctrl, .cart-item .row-price, .cart-item .trash { grid-column: 2; }
+
+  /* Login: apilar verticalmente */
+  .login-wrap { flex-direction: column; height: auto !important; width: 100% !important; }
+  .login-left { padding: 36px 24px; }
+  .tagline { font-size: 28px; }
+  .features { margin-top: 24px; }
+  .login-right { width: 100% !important; padding: 36px 24px; }
+  .login-title { font-size: 24px; }
+
+  /* Steps en carrito: ocultar separadores en móvil */
+  .step-sep { width: 20px; }
+  .step { font-size: 11px; }
+
+  /* Cuestionario sintomas: stepper colapsa */
+  .stepper { flex-wrap: wrap; gap: 8px; }
+  .stp { font-size: 10px; min-width: 60px; }
+  .question { font-size: 18px; }
+  .nav-row { flex-direction: column; gap: 12px; }
+
+  /* Checkout summary fluído */
+  .summary-total { font-size: 18px; }
+  .credit-card-preview { padding: 16px; }
+  .cc-number { font-size: 15px; letter-spacing: 0.10em; }
+
+  /* Chips: scroll horizontal */
+  .chip-row { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 6px; }
+  .chip { white-space: nowrap; }
+
+  /* Stat cards más compactas */
+  .stat-card { padding: 16px; }
+  .stat-num { font-size: 22px; }
+}
+
+/* ============== MOBILE pequeño ≤ 480px ============== */
+@media (max-width: 480px) {
+  .product-grid { grid-template-columns: 1fr !important; }
+  .login-title { font-size: 22px; }
+  .tagline { font-size: 24px; }
+  .lead { font-size: 14px; }
+  .feature-txt { font-size: 13px; }
+  .page-title { font-size: 19px; }
+  .h2 { font-size: 16px; }
+  .pm-card .lbl { font-size: 11px; }
+  .pm-card .ico { font-size: 18px; }
+}
+
+/* Hamburguesa: oculta en desktop, visible en mobile */
+.hamburger {
+  display: none; cursor: pointer;
+  width: 38px; height: 38px; border-radius: 8px;
+  background: var(--bg); align-items: center; justify-content: center;
+  border: 1px solid var(--border); flex-shrink: 0;
+}
+.hamburger span {
+  display: block; width: 18px; height: 2px; background: var(--text);
+  position: relative;
+}
+.hamburger span::before, .hamburger span::after {
+  content: ''; position: absolute; width: 18px; height: 2px; background: var(--text); left: 0;
+}
+.hamburger span::before { top: -6px; }
+.hamburger span::after { top: 6px; }
