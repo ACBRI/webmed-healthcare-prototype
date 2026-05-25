@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Webmed — Carrito y pago</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  .steps { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+  .step { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--text-tertiary); }
+  .step.active { color: var(--primary-600); }
+  .step.done { color: var(--success); }
+  .step-num { width: 26px; height: 26px; border-radius: 50%; background: var(--bg); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+  .step.done .step-num { background: var(--success); color: white; border-color: var(--success); }
+  .step.active .step-num { background: var(--primary-500); color: white; border-color: var(--primary-500); }
+  .step-sep { width: 50px; height: 2px; background: var(--border); }
+
+  .cart-item { display: grid; grid-template-columns: 60px 1fr auto auto auto; gap: 16px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border); }
+  .cart-item:last-child { border-bottom: none; }
+  .cart-img { width: 60px; height: 60px; border-radius: 10px; background: linear-gradient(135deg, #E6F4EE, #F0FDF4); display: flex; align-items: center; justify-content: center; font-size: 26px; }
+  .qty-ctrl { display: flex; align-items: center; gap: 8px; }
+  .qty-ctrl button { width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border-strong); background: white; font-weight: 700; cursor: pointer; }
+  .qty-ctrl .v { font-weight: 700; font-size: 14px; min-width: 24px; text-align: center; }
+  .row-price { font-weight: 700; min-width: 90px; text-align: right; color: var(--primary-700); }
+  .trash { color: var(--danger); cursor: pointer; font-size: 18px; padding: 4px; }
+
+  .summary-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; color: var(--text-sec); }
+  .summary-total { font-size: 22px; font-weight: 800; color: var(--primary-700); }
+  .promo-input { display: flex; gap: 8px; }
+  .promo-input input { flex: 1; padding: 10px 12px; border: 1.5px solid var(--border-strong); border-radius: 8px; font-size: 13px; font-family: inherit; }
+  .promo-input button { padding: 10px 16px; border: 1.5px solid var(--primary-500); background: white; color: var(--primary-600); border-radius: 8px; font-weight: 600; cursor: pointer; }
+
+  .payment-method { display: flex; gap: 10px; margin-bottom: 18px; }
+  .pm-card { flex: 1; padding: 14px; border: 2px solid var(--border); border-radius: 10px; cursor: pointer; text-align: center; }
+  .pm-card.active { border-color: var(--primary-500); background: var(--primary-50); }
+  .pm-card .ico { font-size: 22px; margin-bottom: 4px; }
+  .pm-card .lbl { font-size: 12px; font-weight: 600; }
+
+  .credit-card-preview {
+    background: linear-gradient(135deg, #1A4F37, #226647);
+    border-radius: 14px; padding: 22px; color: white; margin-bottom: 18px;
+    position: relative; overflow: hidden;
+  }
+  .credit-card-preview::after {
+    content: ''; position: absolute; top: -50px; right: -50px; width: 180px; height: 180px;
+    border-radius: 50%; background: rgba(0,184,148,0.20);
+  }
+  .cc-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; position: relative; }
+  .cc-chip { width: 40px; height: 30px; border-radius: 6px; background: linear-gradient(135deg, #FBBF24, #F59E0B); }
+  .cc-brand { font-size: 16px; font-weight: 800; letter-spacing: 0.05em; }
+  .cc-number { font-size: 19px; letter-spacing: 0.18em; font-weight: 600; margin-bottom: 18px; position: relative; }
+  .cc-footer { display: flex; justify-content: space-between; font-size: 11px; opacity: 0.85; position: relative; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <a href="02_dashboard.html" class="brand" style="text-decoration:none;"><div class="brand-logo">⚕</div>Webmed</a>
+    <div class="flex center gap-16">
+      <a href="03_medicamentos.html" class="link" style="font-size:13px;">← Seguir comprando</a>
+      <div class="avatar">AB</div>
+    </div>
+  </div>
+
+  <main class="main" style="padding: 32px 64px;">
+    <div class="steps">
+      <div class="step done"><div class="step-num">✓</div> Carrito</div>
+      <div class="step-sep"></div>
+      <div class="step active"><div class="step-num">2</div> Datos y pago</div>
+      <div class="step-sep"></div>
+      <div class="step"><div class="step-num">3</div> Confirmación</div>
+    </div>
+
+    <h1 class="page-title mb-24">Carrito de compras</h1>
+
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 28px;">
+      <!-- IZQUIERDA -->
+      <div>
+        <div class="card mb-20">
+          <h3 class="h2 mb-16">Productos (3)</h3>
+          <div class="cart-item">
+            <div class="cart-img">💊</div>
+            <div>
+              <div style="font-weight:700;font-size:14px;">Paracetamol 500mg</div>
+              <div class="tiny">Caja x 20 tabletas · Genfar</div>
+              <span class="badge badge-rx" style="margin-top:6px;">Requiere Rx</span>
+            </div>
+            <div class="qty-ctrl"><button>−</button><span class="v">2</span><button>+</button></div>
+            <div class="row-price">$17.000</div>
+            <div class="trash">🗑</div>
+          </div>
+          <div class="cart-item">
+            <div class="cart-img" style="background:linear-gradient(135deg,#DBEAFE,#EFF6FF);">💊</div>
+            <div>
+              <div style="font-weight:700;font-size:14px;">Vitamina C 1000mg</div>
+              <div class="tiny">Frasco x 60 cápsulas · Bayer</div>
+              <span class="badge badge-success" style="margin-top:6px;">Venta libre</span>
+            </div>
+            <div class="qty-ctrl"><button>−</button><span class="v">1</span><button>+</button></div>
+            <div class="row-price">$15.800</div>
+            <div class="trash">🗑</div>
+          </div>
+          <div class="cart-item">
+            <div class="cart-img" style="background:linear-gradient(135deg,#FEE2E2,#FEF2F2);">💊</div>
+            <div>
+              <div style="font-weight:700;font-size:14px;">Omeprazol 20mg</div>
+              <div class="tiny">Caja x 14 cápsulas · La Santé</div>
+              <span class="badge badge-rx" style="margin-top:6px;">Requiere Rx</span>
+            </div>
+            <div class="qty-ctrl"><button>−</button><span class="v">3</span><button>+</button></div>
+            <div class="row-price">$29.400</div>
+            <div class="trash">🗑</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="h2 mb-16">Datos de pago</h3>
+          <div class="payment-method">
+            <div class="pm-card active"><div class="ico">💳</div><div class="lbl">Tarjeta</div></div>
+            <div class="pm-card"><div class="ico">🏦</div><div class="lbl">PSE</div></div>
+            <div class="pm-card"><div class="ico">📱</div><div class="lbl">Nequi</div></div>
+            <div class="pm-card"><div class="ico">💵</div><div class="lbl">Contra entrega</div></div>
+          </div>
+
+          <div class="credit-card-preview">
+            <div class="cc-row"><div class="cc-chip"></div><div class="cc-brand">VISA</div></div>
+            <div class="cc-number">1234  5678  9012  3567</div>
+            <div class="cc-footer"><div><div class="tiny" style="color:white;opacity:0.7;">Titular</div><div style="font-weight:600;">ANDRÉS BRIÑEZ</div></div><div><div class="tiny" style="color:white;opacity:0.7;">Vence</div><div style="font-weight:600;">12/28</div></div></div>
+          </div>
+
+          <div class="form-row">
+            <div class="field"><label class="label">Número de tarjeta</label><input class="input" value="1234 5678 9012 3567" /></div>
+            <div class="field"><label class="label">Titular</label><input class="input" value="Andrés Briñez Núñez" /></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label class="label">Vencimiento (MM/AA)</label><input class="input" value="12/28" /></div>
+            <div class="field"><label class="label">CVV</label><input class="input" value="•••" /></div>
+          </div>
+          <div class="field"><label class="label">Dirección de entrega</label><input class="input" value="Cra. 15 # 123-45, Apto 502 — Bogotá D.C." /></div>
+        </div>
+      </div>
+
+      <!-- DERECHA -->
+      <div>
+        <div class="card card-elev" style="position:sticky;top:24px;">
+          <h3 class="h2 mb-16">Resumen del pedido</h3>
+          <div class="summary-row"><span>Subtotal (3 ítems)</span><span style="color:var(--text);font-weight:600;">$62.200</span></div>
+          <div class="summary-row"><span>IVA (19%)</span><span style="color:var(--text);font-weight:600;">$11.818</span></div>
+          <div class="summary-row"><span>Envío Bogotá</span><span style="color:var(--text);font-weight:600;">$6.000</span></div>
+          <div class="summary-row"><span>Descuento <span class="badge badge-success" style="margin-left:4px;">SALUD10</span></span><span style="color:var(--success);font-weight:600;">−$6.220</span></div>
+
+          <div class="promo-input mb-16" style="margin-top:14px;">
+            <input placeholder="Código promocional" />
+            <button>Aplicar</button>
+          </div>
+
+          <div style="border-top: 2px dashed var(--border); padding-top: 16px;">
+            <div class="flex between center"><span style="font-size:14px;font-weight:700;">Total a pagar</span><span class="summary-total">$73.798</span></div>
+            <div class="tiny mt-12" style="line-height:1.5;">⏱ Entrega estimada: <b>mañana antes de las 11:00 AM</b></div>
+          </div>
+
+          <a href="02_dashboard.html" class="btn btn-primary btn-block mt-16" style="text-decoration:none;">Pagar ahora →</a>
+
+          <div class="tiny text-center mt-16" style="line-height:1.5;">🔒 Pago seguro · Datos cifrados con SSL 256-bit</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

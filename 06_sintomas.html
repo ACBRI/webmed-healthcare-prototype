@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Webmed — Verificador de síntomas</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  .checker-wrap { max-width: 920px; margin: 0 auto; }
+
+  .progress-bar { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 22px; margin-bottom: 24px; }
+  .progress-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .progress-label { font-size: 13px; color: var(--text-sec); font-weight: 600; }
+  .progress-pct { font-size: 13px; font-weight: 700; color: var(--primary-600); }
+  .bar { width: 100%; height: 8px; background: var(--bg); border-radius: 999px; overflow: hidden; }
+  .bar-fill { height: 100%; width: 40%; background: linear-gradient(90deg, var(--primary-500), var(--accent)); border-radius: 999px; }
+  .stepper { display: flex; justify-content: space-between; margin-top: 16px; }
+  .stp { display: flex; flex-direction: column; align-items: center; font-size: 11.5px; gap: 5px; color: var(--text-tertiary); font-weight: 600; flex: 1; position: relative; }
+  .stp .dot { width: 22px; height: 22px; border-radius: 50%; background: white; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
+  .stp.done .dot { background: var(--success); border-color: var(--success); color: white; }
+  .stp.active .dot { background: var(--primary-500); border-color: var(--primary-500); color: white; }
+  .stp.done, .stp.active { color: var(--text); }
+
+  .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 30px 32px; margin-bottom: 18px; }
+  .question { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .sub { font-size: 14px; color: var(--text-sec); margin-bottom: 22px; }
+
+  .search-sym { display: flex; gap: 10px; padding: 12px 16px; border: 1.5px solid var(--border-strong); border-radius: 12px; align-items: center; background: var(--surface); margin-bottom: 22px; }
+  .search-sym input { flex: 1; border: none; outline: none; font-family: inherit; font-size: 14px; }
+
+  .sym-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .sym {
+    padding: 16px 18px; border: 1.5px solid var(--border); border-radius: 12px;
+    display: flex; align-items: center; gap: 12px; cursor: pointer; background: white;
+  }
+  .sym:hover { border-color: var(--primary-300); }
+  .sym.active { background: var(--primary-50); border-color: var(--primary-500); }
+  .sym-check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border-strong); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .sym.active .sym-check { background: var(--primary-500); border-color: var(--primary-500); color: white; font-size: 13px; font-weight: 700; }
+  .sym-ico { font-size: 20px; }
+  .sym-name { font-size: 14px; font-weight: 600; }
+  .sym-meta { font-size: 11px; color: var(--text-sec); }
+
+  .result-preview { background: linear-gradient(135deg, #FEF3C7 0%, #FFFBEB 100%); border: 1px solid #FCD34D; border-radius: 14px; padding: 22px; margin-bottom: 18px; }
+  .result-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .result-header .ico { width: 40px; height: 40px; border-radius: 10px; background: #F59E0B; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; }
+  .result-header h3 { font-size: 16px; font-weight: 700; }
+  .result-header p { font-size: 12.5px; color: var(--text-sec); }
+
+  .candidate { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: white; border-radius: 10px; margin-bottom: 8px; }
+  .cand-name { font-weight: 600; font-size: 13.5px; }
+  .cand-prob { display: flex; align-items: center; gap: 10px; min-width: 120px; }
+  .prob-bar { width: 80px; height: 6px; background: var(--bg); border-radius: 999px; overflow: hidden; }
+  .prob-fill { height: 100%; border-radius: 999px; }
+  .prob-pct { font-size: 12px; font-weight: 700; min-width: 32px; text-align: right; }
+
+  .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; }
+
+  .disclaimer { background: var(--bg); border-radius: 10px; padding: 14px 18px; font-size: 12px; color: var(--text-sec); margin-top: 18px; line-height: 1.55; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <a href="02_dashboard.html" class="brand" style="text-decoration:none;"><div class="brand-logo">⚕</div>Webmed</a>
+    <div class="topnav-right">
+      <a href="#" class="link" style="font-size:13px;">Salir del cuestionario</a>
+      <div class="avatar">AB</div>
+    </div>
+  </div>
+
+  <main class="main">
+    <div class="checker-wrap">
+      <div class="progress-bar">
+        <div class="progress-row">
+          <span class="progress-label">Paso 2 de 5 — Síntomas principales</span>
+          <span class="progress-pct">40 %</span>
+        </div>
+        <div class="bar"><div class="bar-fill"></div></div>
+        <div class="stepper">
+          <div class="stp done"><div class="dot">✓</div>Datos básicos</div>
+          <div class="stp active"><div class="dot">2</div>Síntomas</div>
+          <div class="stp"><div class="dot">3</div>Duración</div>
+          <div class="stp"><div class="dot">4</div>Antecedentes</div>
+          <div class="stp"><div class="dot">5</div>Resultado</div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <h2 class="question">¿Qué síntomas presenta?</h2>
+        <p class="sub">Seleccione todos los que apliquen. Si no encuentra alguno, búsquelo en la barra inferior.</p>
+
+        <div class="search-sym">
+          🔎 <input placeholder="Ej.: dolor de cabeza, fiebre, náuseas..." />
+        </div>
+
+        <div class="sym-grid">
+          <div class="sym active"><div class="sym-check">✓</div><div class="sym-ico">🌡️</div><div><div class="sym-name">Fiebre</div><div class="sym-meta">Más de 38°C</div></div></div>
+          <div class="sym active"><div class="sym-check">✓</div><div class="sym-ico">🤧</div><div><div class="sym-name">Tos</div><div class="sym-meta">Seca o con flema</div></div></div>
+          <div class="sym"><div class="sym-check"></div><div class="sym-ico">😣</div><div><div class="sym-name">Dolor de cabeza</div><div class="sym-meta">Frontal o general</div></div></div>
+          <div class="sym"><div class="sym-check"></div><div class="sym-ico">💪</div><div><div class="sym-name">Dolor muscular</div><div class="sym-meta">Cuerpo o articulaciones</div></div></div>
+          <div class="sym"><div class="sym-check"></div><div class="sym-ico">🤢</div><div><div class="sym-name">Náuseas</div><div class="sym-meta">Con o sin vómito</div></div></div>
+          <div class="sym active"><div class="sym-check">✓</div><div class="sym-ico">😴</div><div><div class="sym-name">Fatiga</div><div class="sym-meta">Cansancio extremo</div></div></div>
+          <div class="sym"><div class="sym-check"></div><div class="sym-ico">😮‍💨</div><div><div class="sym-name">Falta de aire</div><div class="sym-meta">Dificultad al respirar</div></div></div>
+          <div class="sym"><div class="sym-check"></div><div class="sym-ico">🫁</div><div><div class="sym-name">Dolor de garganta</div><div class="sym-meta">Al tragar</div></div></div>
+          <div class="sym"><div class="sym-check"></div><div class="sym-ico">🥶</div><div><div class="sym-name">Escalofríos</div><div class="sym-meta">Sin fiebre clara</div></div></div>
+        </div>
+      </div>
+
+      <div class="result-preview">
+        <div class="result-header">
+          <div class="ico">⚡</div>
+          <div><h3>Vista previa de condiciones probables</h3><p>Basado en 3 síntomas seleccionados — siga el cuestionario para mejorar la precisión.</p></div>
+        </div>
+        <div class="candidate">
+          <div><div class="cand-name">🦠 Resfriado común</div><div class="tiny">Compatible con sus síntomas</div></div>
+          <div class="cand-prob"><div class="prob-bar"><div class="prob-fill" style="width:62%;background:#10B981;"></div></div><div class="prob-pct">62%</div></div>
+        </div>
+        <div class="candidate">
+          <div><div class="cand-name">🦠 Gripe (Influenza)</div><div class="tiny">Síntomas más intensos</div></div>
+          <div class="cand-prob"><div class="prob-bar"><div class="prob-fill" style="width:48%;background:#F59E0B;"></div></div><div class="prob-pct">48%</div></div>
+        </div>
+        <div class="candidate">
+          <div><div class="cand-name">🦠 COVID-19</div><div class="tiny">Recomendamos prueba</div></div>
+          <div class="cand-prob"><div class="prob-bar"><div class="prob-fill" style="width:31%;background:#EF4444;"></div></div><div class="prob-pct">31%</div></div>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        ⚠️ <b>Aviso:</b> esta herramienta es de carácter orientativo y no reemplaza la consulta con un profesional médico. Si presenta síntomas severos, llame al 123 o acuda a urgencias.
+      </div>
+
+      <div class="nav-row">
+        <button class="btn btn-ghost">← Atrás</button>
+        <div class="flex center gap-12">
+          <span class="tiny">3 síntomas seleccionados</span>
+          <a href="02_dashboard.html" class="btn btn-primary" style="text-decoration:none;">Siguiente →</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

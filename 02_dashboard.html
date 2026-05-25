@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Webmed — Dashboard</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  .stat-card { padding: 22px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+  .stat-ico { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 14px; }
+  .stat-num { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; }
+  .stat-label { font-size: 13px; color: var(--text-sec); }
+  .stat-delta { font-size: 12px; font-weight: 600; margin-top: 4px; }
+  .delta-up { color: var(--success); }
+  .delta-down { color: var(--danger); }
+
+  .quick-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .quick { padding: 22px; border-radius: 14px; cursor: pointer; transition: transform .15s; border: 1px solid transparent; }
+  .quick:hover { transform: translateY(-2px); }
+  .quick h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .quick p { font-size: 12.5px; opacity: 0.85; }
+  .quick-ico { width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 14px; }
+  .q1 { background: linear-gradient(135deg, #226647, #2E7D5B); color: white; }
+  .q2 { background: linear-gradient(135deg, #00B894, #00C9A7); color: white; }
+  .q3 { background: linear-gradient(135deg, #F59E0B, #FBBF24); color: white; }
+  .q4 { background: linear-gradient(135deg, #3B82F6, #60A5FA); color: white; }
+  .q5 { background: linear-gradient(135deg, #EF4444, #F87171); color: white; }
+  .q6 { background: linear-gradient(135deg, #8B5CF6, #A78BFA); color: white; }
+
+  .notif-list { display: flex; flex-direction: column; gap: 12px; }
+  .notif {
+    display: flex; gap: 12px; padding: 14px; background: var(--bg);
+    border-radius: 10px; align-items: flex-start;
+  }
+  .notif-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 7px; flex-shrink: 0; }
+  .notif-body h5 { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .notif-body p { font-size: 12px; color: var(--text-sec); line-height: 1.4; }
+  .notif-time { font-size: 11px; color: var(--text-tertiary); margin-top: 4px; }
+
+  .appt {
+    display: flex; gap: 14px; padding: 14px; border-radius: 10px;
+    background: var(--bg); align-items: center; margin-bottom: 10px;
+  }
+  .appt-date { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px; text-align: center; min-width: 56px; }
+  .appt-date .d { font-size: 18px; font-weight: 800; color: var(--primary-700); }
+  .appt-date .m { font-size: 11px; color: var(--text-sec); text-transform: uppercase; font-weight: 600; }
+  .appt-info { flex: 1; }
+  .appt-info h5 { font-size: 14px; font-weight: 700; }
+  .appt-info p { font-size: 12px; color: var(--text-sec); }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="flex center gap-24">
+      <a href="02_dashboard.html" class="brand" style="text-decoration:none;"><div class="brand-logo">⚕</div>Webmed</a>
+      <div class="search">🔍 <input placeholder="Buscar médicos, medicamentos, síntomas..." /></div>
+    </div>
+    <div class="topnav-right">
+      <a href="#" class="link" style="font-size:13px;">Ayuda</a>
+      <div class="bell">🔔</div>
+      <div class="flex center gap-8">
+        <div class="avatar">AB</div>
+        <div style="line-height:1.2;">
+          <div style="font-size:13px;font-weight:600;">Andrés Briñez</div>
+          <div class="tiny">Paciente</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-section">Principal</div>
+      <a href="02_dashboard.html" style="text-decoration:none;color:inherit;"><div class="sidebar-item active"><span class="icon">🏠</span> Inicio</div></a>
+      <a href="02_dashboard.html" style="text-decoration:none;color:inherit;"><div class="sidebar-item"><span class="icon">🩺</span> Health A–Z</div></a>
+      <a href="03_medicamentos.html" style="text-decoration:none;color:inherit;"><div class="sidebar-item"><span class="icon">💊</span> Medicamentos</div></a>
+      <a href="05_seguros.html" style="text-decoration:none;color:inherit;"><div class="sidebar-item"><span class="icon">🛡️</span> Seguros</div></a>
+      <a href="02_dashboard.html" style="text-decoration:none;color:inherit;"><div class="sidebar-item"><span class="icon">📰</span> Noticias</div></a>
+      <div class="sidebar-section">Recursos</div>
+      <a href="06_sintomas.html" style="text-decoration:none;color:inherit;"><div class="sidebar-item"><span class="icon">🌡️</span> Verificar síntomas</div></a>
+      <a href="02_dashboard.html" style="text-decoration:none;color:inherit;"><div class="sidebar-item"><span class="icon">📍</span> Encontrar doctor</div></a>
+      <a href="02_dashboard.html" style="text-decoration:none;color:inherit;"><div class="sidebar-item"><span class="icon">🚑</span> Ambulancia</div></a>
+      <div class="sidebar-section">Cuenta</div>
+      <a href="02_dashboard.html" style="text-decoration:none;color:inherit;"><div class="sidebar-item"><span class="icon">⚙️</span> Configuración</div></a>
+      <a href="index.html" style="text-decoration:none;color:inherit;"><div class="sidebar-item"><span class="icon">🚪</span> Cerrar sesión</div></a>
+    </aside>
+
+    <main class="main">
+      <div class="flex between center mb-24">
+        <div>
+          <h1 class="page-title">Bienvenido, Andrés 👋</h1>
+          <p class="page-sub">Resumen de tu actividad reciente — Lunes 18 de mayo de 2026</p>
+        </div>
+        <button class="btn btn-primary">+ Nueva consulta</button>
+      </div>
+
+      <div class="grid grid-4 mb-32">
+        <div class="stat-card">
+          <div class="stat-ico" style="background:#E6F4EE;color:#226647;">🩺</div>
+          <div class="stat-num">3</div>
+          <div class="stat-label">Consultas próximas</div>
+          <div class="stat-delta delta-up">↑ 2 esta semana</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-ico" style="background:#FEF3C7;color:#92400E;">📦</div>
+          <div class="stat-num">2</div>
+          <div class="stat-label">Pedidos en camino</div>
+          <div class="stat-delta" style="color:var(--text-sec);">Llega mañana</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-ico" style="background:#DBEAFE;color:#1E40AF;">🛡️</div>
+          <div class="stat-num">Activa</div>
+          <div class="stat-label">Póliza Sura Classic</div>
+          <div class="stat-delta" style="color:var(--text-sec);">Renueva 12/12/26</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-ico" style="background:#DCFCE7;color:#166534;">📊</div>
+          <div class="stat-num">85%</div>
+          <div class="stat-label">Tu salud (IMC + signos)</div>
+          <div class="stat-delta delta-up">↑ 4% último mes</div>
+        </div>
+      </div>
+
+      <h2 class="h2 mb-16">Accesos rápidos</h2>
+      <div class="quick-grid mb-32">
+        <a href="02_dashboard.html" style="text-decoration:none;color:inherit;"><div class="quick q1"><div class="quick-ico">🩺</div><h4>Pedir consulta médica</h4><p>Agenda con +200 especialistas</p></div></a>
+        <a href="03_medicamentos.html" style="text-decoration:none;color:inherit;"><div class="quick q2"><div class="quick-ico">💊</div><h4>Comprar medicamentos</h4><p>Entrega en 90 minutos</p></div></a>
+        <a href="05_seguros.html" style="text-decoration:none;color:inherit;"><div class="quick q3"><div class="quick-ico">🛡️</div><h4>Comparar seguros</h4><p>4 aseguradoras aliadas</p></div></a>
+        <a href="06_sintomas.html" style="text-decoration:none;color:inherit;"><div class="quick q4"><div class="quick-ico">🌡️</div><h4>Verificar síntomas</h4><p>Diagnóstico orientativo</p></div></a>
+        <a href="02_dashboard.html" style="text-decoration:none;color:inherit;"><div class="quick q5"><div class="quick-ico">🚑</div><h4>Solicitar ambulancia</h4><p>24/7 a tu ubicación</p></div></a>
+        <a href="02_dashboard.html" style="text-decoration:none;color:inherit;"><div class="quick q6"><div class="quick-ico">📰</div><h4>Noticias de salud</h4><p>Boletines y campañas</p></div></a>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="flex between center mb-16"><h3 class="h2">Próximas citas</h3><a class="link" href="#">Ver todas →</a></div>
+          <div class="appt">
+            <div class="appt-date"><div class="d">20</div><div class="m">May</div></div>
+            <div class="appt-info">
+              <h5>Dr. Carlos López — Medicina general</h5>
+              <p>12:00 PM · Video consulta · Confirmada</p>
+            </div>
+            <span class="badge badge-success">Confirmada</span>
+          </div>
+          <div class="appt">
+            <div class="appt-date"><div class="d">23</div><div class="m">May</div></div>
+            <div class="appt-info">
+              <h5>Dra. María Pérez — Cardiología</h5>
+              <p>09:30 AM · Presencial · Sede Norte</p>
+            </div>
+            <span class="badge badge-info">Pendiente</span>
+          </div>
+          <div class="appt">
+            <div class="appt-date"><div class="d">27</div><div class="m">May</div></div>
+            <div class="appt-info">
+              <h5>Dr. Juan Gómez — Dermatología</h5>
+              <p>03:00 PM · Video consulta</p>
+            </div>
+            <span class="badge badge-warn">Por confirmar</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="flex between center mb-16"><h3 class="h2">Notificaciones</h3><a class="link" href="#">Marcar todas leídas</a></div>
+          <div class="notif-list">
+            <div class="notif">
+              <div class="notif-dot" style="background:var(--success);"></div>
+              <div class="notif-body">
+                <h5>Cita confirmada</h5>
+                <p>Tu consulta con el Dr. Carlos López fue confirmada para el 20 de mayo.</p>
+                <div class="notif-time">Hace 12 minutos</div>
+              </div>
+            </div>
+            <div class="notif">
+              <div class="notif-dot" style="background:var(--warning);"></div>
+              <div class="notif-body">
+                <h5>Pedido enviado</h5>
+                <p>Tu pedido #WM-4821 con 3 medicamentos sale para entrega mañana antes de las 11 AM.</p>
+                <div class="notif-time">Hace 1 hora</div>
+              </div>
+            </div>
+            <div class="notif">
+              <div class="notif-dot" style="background:var(--info);"></div>
+              <div class="notif-body">
+                <h5>Renovación de póliza</h5>
+                <p>Tu póliza Sura Classic vence en 30 días. Renueva para mantener tu cobertura.</p>
+                <div class="notif-time">Hace 5 horas</div>
+              </div>
+            </div>
+            <div class="notif">
+              <div class="notif-dot" style="background:var(--danger);"></div>
+              <div class="notif-body">
+                <h5>Resultado de laboratorio listo</h5>
+                <p>Tus resultados de hemograma del Lab. Clínico Vital ya están disponibles.</p>
+                <div class="notif-time">Ayer</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

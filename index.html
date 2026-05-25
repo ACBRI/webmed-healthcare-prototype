@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Webmed — Iniciar sesión</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  body, html, .app { background: linear-gradient(135deg, #E6F4EE 0%, #F7FAFC 60%); }
+  .login-wrap { width: 1440px; height: 900px; display: flex; }
+  .login-left {
+    flex: 1; padding: 80px 90px;
+    display: flex; flex-direction: column; justify-content: center;
+    background: linear-gradient(155deg, #226647 0%, #1A4F37 100%);
+    color: white; position: relative; overflow: hidden;
+  }
+  .login-left::before {
+    content: ''; position: absolute; top: -120px; right: -120px;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: rgba(0, 184, 148, 0.15);
+  }
+  .login-left::after {
+    content: ''; position: absolute; bottom: -180px; left: -120px;
+    width: 480px; height: 480px; border-radius: 50%;
+    background: rgba(109, 190, 148, 0.10);
+  }
+  .brand-big { display: flex; align-items: center; gap: 14px; font-size: 32px; font-weight: 800; margin-bottom: 60px; z-index: 1; }
+  .brand-big .brand-logo { width: 56px; height: 56px; font-size: 28px; border-radius: 14px; }
+  .tagline { font-size: 44px; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 20px; z-index: 1; }
+  .tagline span { color: #6DBE94; }
+  .lead { font-size: 17px; opacity: 0.85; line-height: 1.55; max-width: 460px; z-index: 1; }
+  .features { display: flex; flex-direction: column; gap: 16px; margin-top: 48px; z-index: 1; }
+  .feature { display: flex; align-items: center; gap: 14px; }
+  .feature-ico { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .feature-txt { font-size: 15px; font-weight: 500; }
+
+  .login-right {
+    width: 580px; background: var(--surface);
+    display: flex; align-items: center; justify-content: center; padding: 0 80px;
+  }
+  .login-card { width: 100%; max-width: 420px; }
+  .login-title { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .login-sub { font-size: 14px; color: var(--text-sec); margin-bottom: 36px; }
+  .input-icon { position: relative; }
+  .input-icon .ico { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 18px; opacity: 0.5; }
+  .input-icon input { padding-left: 44px; }
+  .remember-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+  .check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-sec); }
+  .check input { accent-color: var(--primary-500); }
+  .link { color: var(--primary-600); font-weight: 600; font-size: 13px; text-decoration: none; }
+  .divider { display: flex; align-items: center; gap: 14px; margin: 28px 0; color: var(--text-tertiary); font-size: 12px; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .social-row { display: flex; gap: 12px; }
+  .social-btn { flex: 1; padding: 11px; border: 1.5px solid var(--border-strong); border-radius: 10px; background: white; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600; font-size: 13px; color: var(--text-sec); cursor: pointer; }
+  .signup-link { text-align: center; margin-top: 28px; font-size: 14px; color: var(--text-sec); }
+  .signup-link a { color: var(--primary-600); font-weight: 700; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="app login-wrap">
+  <div class="login-left">
+    <div class="brand-big">
+      <div class="brand-logo">⚕</div>
+      Webmed
+    </div>
+    <h1 class="tagline">Tu salud, <span>simple y a tiempo</span>.</h1>
+    <p class="lead">Consulta médicos en línea, compra medicamentos con entrega a domicilio y compara planes de salud desde un solo lugar.</p>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-ico">🩺</div>
+        <div class="feature-txt">Consultas con especialistas en menos de 15 minutos</div>
+      </div>
+      <div class="feature">
+        <div class="feature-ico">💊</div>
+        <div class="feature-txt">Catálogo de más de 12.000 medicamentos con domicilio</div>
+      </div>
+      <div class="feature">
+        <div class="feature-ico">🛡️</div>
+        <div class="feature-txt">Planes de aseguramiento comparados al instante</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <div class="login-card">
+      <h2 class="login-title">Iniciar sesión</h2>
+      <p class="login-sub">Accede a tu cuenta Webmed para continuar.</p>
+
+      <div class="field">
+        <label class="label">Correo electrónico</label>
+        <div class="input-icon">
+          <span class="ico">✉</span>
+          <input class="input" type="email" value="andres.briñez@webmed.co" />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Contraseña</label>
+        <div class="input-icon">
+          <span class="ico">🔒</span>
+          <input class="input" type="password" value="••••••••••••" />
+        </div>
+      </div>
+
+      <div class="remember-row">
+        <label class="check"><input type="checkbox" checked> Mantener sesión iniciada</label>
+        <a href="#" class="link">¿Olvidé mi contraseña?</a>
+      </div>
+
+      <a href="02_dashboard.html" class="btn btn-primary btn-block" style="text-decoration:none;">Iniciar sesión →</a>
+
+      <div class="divider">o continuar con</div>
+      <div class="social-row">
+        <button class="social-btn"><span style="color:#4285F4;font-weight:800">G</span> Google</button>
+        <button class="social-btn"><span>📧</span> Correo médico</button>
+      </div>
+
+      <p class="signup-link">¿No tienes cuenta? <a href="#">Crear cuenta gratis</a></p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

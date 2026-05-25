@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Webmed — Comparador de seguros</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  .filter-bar { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 22px; display: grid; grid-template-columns: 2fr 1fr 1fr 1.4fr auto; gap: 14px; align-items: end; margin-bottom: 26px; }
+  .compare-grid { display: grid; grid-template-columns: 180px repeat(4, 1fr); gap: 0; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--surface); }
+  .ch-head { padding: 24px 20px; }
+  .ch-attr { padding: 18px 20px; font-weight: 600; color: var(--text-sec); font-size: 13.5px; background: var(--bg); border-top: 1px solid var(--border); display: flex; align-items: center; }
+  .ch-cell { padding: 18px 20px; border-top: 1px solid var(--border); border-left: 1px solid var(--border); display: flex; align-items: center; }
+  .plan-header { padding: 24px 20px; text-align: center; border-left: 1px solid var(--border); position: relative; }
+  .plan-header.best { background: linear-gradient(180deg, #E6F4EE 0%, white 100%); }
+  .plan-badge { position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: var(--primary-500); color: white; padding: 4px 14px; border-radius: 0 0 8px 8px; font-size: 11px; font-weight: 700; }
+  .plan-logo { font-size: 28px; margin-bottom: 4px; }
+  .plan-name { font-weight: 800; font-size: 17px; color: var(--text); letter-spacing: -0.01em; }
+  .plan-price { font-size: 24px; font-weight: 800; color: var(--primary-700); margin-top: 8px; }
+  .plan-price-old { font-size: 12px; color: var(--text-tertiary); text-decoration: line-through; }
+  .plan-period { font-size: 12px; color: var(--text-sec); }
+
+  .ch-val { font-size: 14px; font-weight: 600; color: var(--text); }
+  .ch-val.center { text-align: center; justify-content: center; width: 100%; }
+  .check-y { color: var(--success); font-size: 18px; }
+  .check-n { color: var(--text-tertiary); font-size: 18px; }
+  .star-rating { color: #F59E0B; font-size: 14px; }
+  .star-empty { color: var(--border-strong); }
+
+  .contract-row td { padding: 18px 20px; border-top: 1px solid var(--border); }
+  .footer-action { padding: 22px 20px; border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+
+  .legal { background: var(--primary-50); border-left: 4px solid var(--primary-500); border-radius: 8px; padding: 14px 18px; margin-top: 22px; font-size: 12.5px; color: var(--text-sec); line-height: 1.55; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="flex center gap-24">
+      <a href="02_dashboard.html" class="brand" style="text-decoration:none;"><div class="brand-logo">⚕</div>Webmed</a>
+      <div class="search">🔍 <input placeholder="Buscar..." /></div>
+    </div>
+    <div class="topnav-right">
+      <div class="bell">🔔</div>
+      <div class="avatar">AB</div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-section">Principal</div>
+      <a href="02_dashboard.html" style="text-decoration:none;color:inherit;"><div class="sidebar-item"><span class="icon">🏠</span> Inicio</div></a>
+      <a href="02_dashboard.html" style="text-decoration:none;color:inherit;"><div class="sidebar-item"><span class="icon">🩺</span> Health A–Z</div></a>
+      <a href="03_medicamentos.html" style="text-decoration:none;color:inherit;"><div class="sidebar-item"><span class="icon">💊</span> Medicamentos</div></a>
+      <a href="05_seguros.html" style="text-decoration:none;color:inherit;"><div class="sidebar-item active"><span class="icon">🛡️</span> Seguros</div></a>
+      <a href="02_dashboard.html" style="text-decoration:none;color:inherit;"><div class="sidebar-item"><span class="icon">📰</span> Noticias</div></a>
+    </aside>
+
+    <main class="main">
+      <h1 class="page-title mb-4">Comparador de seguros médicos</h1>
+      <p class="page-sub mb-24">Compara coberturas y primas de las principales aseguradoras del país y contrata en línea.</p>
+
+      <div class="filter-bar">
+        <div class="field" style="margin:0;">
+          <label class="label">Tipo de seguro</label>
+          <select class="select"><option>Salud individual</option><option>Salud familiar</option><option>Hospitalización</option></select>
+        </div>
+        <div class="field" style="margin:0;">
+          <label class="label">Edad</label>
+          <input class="input" value="31" />
+        </div>
+        <div class="field" style="margin:0;">
+          <label class="label">Beneficiarios</label>
+          <select class="select"><option>Solo titular</option><option>+1 beneficiario</option><option>+2 beneficiarios</option></select>
+        </div>
+        <div class="field" style="margin:0;">
+          <label class="label">Cobertura mínima</label>
+          <select class="select"><option>$100.000.000 COP</option><option>$150.000.000 COP</option><option>$200.000.000 COP</option></select>
+        </div>
+        <button class="btn btn-primary">🔍 Comparar</button>
+      </div>
+
+      <div class="compare-grid">
+        <div class="ch-head"></div>
+        <div class="plan-header">
+          <div class="plan-logo">🛡️</div>
+          <div class="plan-name">Sura Classic</div>
+          <div class="star-rating mt-12">★★★★<span class="star-empty">★</span></div>
+          <div class="plan-price-old mt-12">$185.000</div>
+          <div class="plan-price">$155.000</div>
+          <div class="plan-period">/mes</div>
+        </div>
+        <div class="plan-header best">
+          <span class="plan-badge">⭐ Recomendado</span>
+          <div class="plan-logo">🏥</div>
+          <div class="plan-name">Mapfre Plus</div>
+          <div class="star-rating mt-12">★★★★★</div>
+          <div class="plan-price-old mt-12">$215.000</div>
+          <div class="plan-price">$187.000</div>
+          <div class="plan-period">/mes</div>
+        </div>
+        <div class="plan-header">
+          <div class="plan-logo">⚕️</div>
+          <div class="plan-name">Colmédica Oro</div>
+          <div class="star-rating mt-12">★★★★<span class="star-empty">★</span></div>
+          <div class="plan-price mt-24">$220.000</div>
+          <div class="plan-period">/mes</div>
+        </div>
+        <div class="plan-header">
+          <div class="plan-logo">🏆</div>
+          <div class="plan-name">Bolívar Total</div>
+          <div class="star-rating mt-12">★★★<span class="star-empty">★</span><span class="star-empty">★</span></div>
+          <div class="plan-price mt-24">$175.000</div>
+          <div class="plan-period">/mes</div>
+        </div>
+
+        <!-- attributes -->
+        <div class="ch-attr">💰 Prima mensual</div>
+        <div class="ch-cell"><span class="ch-val">$155.000</span></div>
+        <div class="ch-cell" style="background:#F0FDF4;"><span class="ch-val" style="color:var(--primary-700);">$187.000</span></div>
+        <div class="ch-cell"><span class="ch-val">$220.000</span></div>
+        <div class="ch-cell"><span class="ch-val">$175.000</span></div>
+
+        <div class="ch-attr">🏥 Deducible anual</div>
+        <div class="ch-cell"><span class="ch-val">$500.000</span></div>
+        <div class="ch-cell" style="background:#F0FDF4;"><span class="ch-val">$300.000</span></div>
+        <div class="ch-cell"><span class="ch-val">$250.000</span></div>
+        <div class="ch-cell"><span class="ch-val">$400.000</span></div>
+
+        <div class="ch-attr">📋 Cobertura</div>
+        <div class="ch-cell"><span class="ch-val">$80M</span></div>
+        <div class="ch-cell" style="background:#F0FDF4;"><span class="ch-val">$150M</span></div>
+        <div class="ch-cell"><span class="ch-val">$200M</span></div>
+        <div class="ch-cell"><span class="ch-val">$120M</span></div>
+
+        <div class="ch-attr">🏨 Hospitales aliados</div>
+        <div class="ch-cell"><span class="ch-val">120</span></div>
+        <div class="ch-cell" style="background:#F0FDF4;"><span class="ch-val">180</span></div>
+        <div class="ch-cell"><span class="ch-val">220</span></div>
+        <div class="ch-cell"><span class="ch-val">150</span></div>
+
+        <div class="ch-attr">🦷 Odontología</div>
+        <div class="ch-cell"><span class="check-y">✓</span></div>
+        <div class="ch-cell" style="background:#F0FDF4;"><span class="check-y">✓</span></div>
+        <div class="ch-cell"><span class="check-y">✓</span></div>
+        <div class="ch-cell"><span class="check-n">✗</span></div>
+
+        <div class="ch-attr">👁 Oftalmología</div>
+        <div class="ch-cell"><span class="check-n">✗</span></div>
+        <div class="ch-cell" style="background:#F0FDF4;"><span class="check-y">✓</span></div>
+        <div class="ch-cell"><span class="check-y">✓</span></div>
+        <div class="ch-cell"><span class="check-n">✗</span></div>
+
+        <div class="ch-attr">🧠 Salud mental</div>
+        <div class="ch-cell"><span class="check-y">✓</span></div>
+        <div class="ch-cell" style="background:#F0FDF4;"><span class="check-y">✓</span></div>
+        <div class="ch-cell"><span class="check-y">✓</span></div>
+        <div class="ch-cell"><span class="check-y">✓</span></div>
+
+        <div class="ch-attr">🌍 Cobertura internacional</div>
+        <div class="ch-cell"><span class="check-n">✗</span></div>
+        <div class="ch-cell" style="background:#F0FDF4;"><span class="check-y">✓</span></div>
+        <div class="ch-cell"><span class="check-y">✓</span></div>
+        <div class="ch-cell"><span class="check-n">✗</span></div>
+
+        <div class="ch-attr"></div>
+        <div class="footer-action"><a href="02_dashboard.html" class="btn btn-outline btn-block" style="text-decoration:none;">Contratar </a></div>
+        <div class="footer-action" style="background:#F0FDF4;"><a href="02_dashboard.html" class="btn btn-primary btn-block" style="text-decoration:none;">Contratar ⭐</a></div>
+        <div class="footer-action"><a href="02_dashboard.html" class="btn btn-outline btn-block" style="text-decoration:none;">Contratar </a></div>
+        <div class="footer-action"><a href="02_dashboard.html" class="btn btn-outline btn-block" style="text-decoration:none;">Contratar </a></div>
+      </div>
+
+      <div class="legal">
+        ℹ️ Las primas mostradas son aproximadas y pueden variar según historial médico, declaración personal de salud y el aseguramiento de beneficiarios. El pago de la primera prima formaliza el contrato. Lea las condiciones generales antes de contratar.
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>
